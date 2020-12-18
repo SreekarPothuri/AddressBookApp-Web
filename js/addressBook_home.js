@@ -1,11 +1,17 @@
 window.addEventListener("DOMContentLoaded", (event) => {
+    addressBookList = getAddressBookDataFromStorage();
+    document.querySelector(".person-count").textContent = addressBookList.length;
     createInnerHtml();
 });
 
+const getAddressBookDataFromStorage = () => {
+    return localStorage.getItem('AddressBookList') ? JSON.parse(localStorage.getItem('AddressBookList')) : [];
+}
+
 const createInnerHtml = () => {
     const headerHtml = "<tr><th>Fullname</th><th>Address</th><th>City</th><th>State</th><th>Zip Code</th><th>Phone Number</th><th></th></tr>"
+    if (addressBookList.length == 0) return;
     let innerHtml = `${headerHtml}`
-    let addressBookList = createAddressBookJSON();
     for (const person of addressBookList) {
         innerHtml = `${innerHtml}
     <tr>
@@ -25,24 +31,6 @@ const createInnerHtml = () => {
     document.querySelector("#display").innerHTML = innerHtml;
 };
 
-const createAddressBookJSON = () => {
-    let addressBookListLocal = [{
-            _name: "Virat Kohli",
-            _address: "Paschim Vihar",
-            _city: "Gurugram",
-            _state: "Haryana",
-            _zip: "560468",
-            _phoneNumber: "6300062138"
-
-        },
-        {
-            _name: "Steve Smith",
-            _address: "New Angels Street",
-            _city: "Sydney",
-            _state: "Sydney",
-            _zip: "565156",
-            _phoneNumber: "9865445210"
-        }
-    ];
-    return addressBookListLocal;
-};
+function remove(employeePayrollList) {
+    localStorage.removeItem(employeePayrollList);
+}
