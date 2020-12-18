@@ -52,6 +52,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
 const saveForm = () => {
     try {
         let addressBook = createAddressBook();
+        createAndUpdateStorage(addressBook);
+        window.location.replace(site_properties.home_page);
     } catch (e) {
         return
     }
@@ -82,6 +84,17 @@ const createAddressBook = () => {
     addressBook.zip = getInputValueById("#Zip");
     alert(addressBook.toString());
     return addressBook;
+}
+
+function createAndUpdateStorage(addressBook) {
+    let addressBookList = JSON.parse(localStorage.getItem("AddressBookList"));
+    if (addressBookList != undefined) {
+        addressBookList.push(addressBook);
+    } else {
+        addressBookList = [addressBook];
+    }
+    alert(addressBookList.toString());
+    localStorage.setItem("AddressBookList", JSON.stringify(addressBookList));
 }
 
 const setaddressBookJSONObject = () => {
