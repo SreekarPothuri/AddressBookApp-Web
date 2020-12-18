@@ -1,4 +1,5 @@
 let addressBookJSONObject = {};
+let isUpdate = false;
 
 window.addEventListener('DOMContentLoaded', (event) => {
     const name = document.querySelector('#name');
@@ -47,6 +48,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             phoneOutput.textContent = e;
         }
     });
+    checkForUpdate();
 });
 
 const saveForm = () => {
@@ -54,9 +56,9 @@ const saveForm = () => {
         let addressBook = createAddressBook();
         createAndUpdateStorage(addressBook);
         resetForm();
-        location.replace(site_properties.home_page);
+        window.location.replace(site_properties.home_page);
     } catch (e) {
-        return
+        return;
     }
 }
 
@@ -107,7 +109,7 @@ const resetForm = () => {
     setValue('#phoneNum', "");
 }
 
-const setaddressBookJSONObject = () => {
+const getaddressBookJSONObject = () => {
     addressBookJSONObject._name = getInputValueById('#name');
     addressBookJSONObject._address = getInputValueById('#address');
     addressBookJSONObject._city = getInputValueById('#city');
@@ -117,8 +119,25 @@ const setaddressBookJSONObject = () => {
     alert("Added Json Object : " + addressBookJSONObject._name );
 };
 
-const getInputValueById = (propertyId) => {
-    let value = document.querySelector(propertyId).value;
+const checkForUpdate = () => {
+    const addressBookJson = localStorage.getItem("editPer");
+    isUpdate = addressBookJson ? true : false;
+    if (!isUpdate) return;
+    addressBookJSONObject = JSON.parse(addressBookJson);
+    setForm();
+};
+
+const setForm = () => {
+    setValue("#name", addressBookJSONObject._name);
+    setValue("#address", addressBookJSONObject._address);
+    setValue("#City", addressBookJSONObject._city);
+    setValue("#State", addressBookJSONObject._state);
+    setValue("#Zip", addressBookJSONObject._zip);
+    setValue("#phoneNum", addressBookJSONObject._phoneNumber);
+};
+
+const getInputValueById = (id) => {
+    let value = document.querySelector(id).value;
     return value;
 };
 
@@ -128,7 +147,7 @@ const setTextValue = (id, value) => {
 }
 
 const setValue = (id, value) => {
-    const element = document.getElementById(id);
+    const element = document.querySelector(id);
     element.value = value;
 }
 
