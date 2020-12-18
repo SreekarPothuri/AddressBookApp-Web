@@ -53,7 +53,8 @@ const saveForm = () => {
     try {
         let addressBook = createAddressBook();
         createAndUpdateStorage(addressBook);
-        window.location.replace(site_properties.home_page);
+        resetForm();
+        location.replace(site_properties.home_page);
     } catch (e) {
         return
     }
@@ -97,6 +98,15 @@ function createAndUpdateStorage(addressBook) {
     localStorage.setItem("AddressBookList", JSON.stringify(addressBookList));
 }
 
+const resetForm = () => {
+    setValue('#name', "");
+    setValue('#address', "");
+    setValue('#City', '');
+    setSelectedIndex('#State', );
+    setSelectedIndex('#Zip', );
+    setValue('#phoneNum', "");
+}
+
 const setaddressBookJSONObject = () => {
     addressBookJSONObject._name = getInputValueById('#name');
     addressBookJSONObject._address = getInputValueById('#address');
@@ -116,3 +126,13 @@ const setTextValue = (id, value) => {
     const element = document.querySelector(id);
     element.textContent = value;
 }
+
+const setValue = (id, value) => {
+    const element = document.getElementById(id);
+    element.value = value;
+}
+
+const setSelectedIndex = (id, index) => {
+    const element = document.querySelector(id);
+    element.selectedIndex = index;
+};
