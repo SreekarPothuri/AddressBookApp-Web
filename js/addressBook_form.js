@@ -50,7 +50,38 @@ window.addEventListener('DOMContentLoaded', (event) => {
 });
 
 const saveForm = () => {
-    setaddressBookJSONObject();
+    try {
+        let addressBook = createAddressBook();
+    } catch (e) {
+        return
+    }
+}
+
+const createAddressBook = () => {
+    let addressBook = new AddressBookData();
+    try {
+        addressBook.name = getInputValueById('#name');
+    } catch (e) {
+        setTextValue('.text-error', e);
+        throw e;
+    }
+    try {
+        addressBook.phoneNumber = getInputValueById('#phoneNum');
+    } catch (e) {
+        setTextValue('.phoneNum-output', e);
+        throw e;
+    }
+    try {
+        addressBook.address = getInputValueById('#address');
+    } catch (e) {
+        setTextValue('.address-error', e);
+        throw e;
+    }
+    addressBook.city = getInputValueById("#City");
+    addressBook.state = getInputValueById("#State");
+    addressBook.zip = getInputValueById("#Zip");
+    alert(addressBook.toString());
+    return addressBook;
 }
 
 const setaddressBookJSONObject = () => {
@@ -67,3 +98,8 @@ const getInputValueById = (propertyId) => {
     let value = document.querySelector(propertyId).value;
     return value;
 };
+
+const setTextValue = (id, value) => {
+    const element = document.querySelector(id);
+    element.textContent = value;
+}
